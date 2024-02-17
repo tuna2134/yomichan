@@ -3,8 +3,8 @@ use std::{collections::HashMap, env, sync::Arc};
 use twilight_gateway::{Intents, Shard, ShardId};
 use twilight_http::Client as HttpClient;
 use twilight_model::id::{marker::ApplicationMarker, Id};
-mod events;
 mod applications;
+mod events;
 
 pub struct StateRef {
     pub http: HttpClient,
