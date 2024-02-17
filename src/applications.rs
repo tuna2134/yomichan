@@ -14,7 +14,7 @@ pub async fn set_application_command(state: &StateRef) -> anyhow::Result<()> {
 }
 
 pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> anyhow::Result<()> {
-    let interaction_http = state.http.interaction(state.application_id);
+    let _interaction_http = state.http.interaction(state.application_id);
     match interaction.kind {
         InteractionType::ApplicationCommand => {
             let command =
@@ -23,9 +23,9 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
                 } else {
                     return Ok(());
                 };
-            println!("{:?}", command.name);
             match command.name.as_str() {
                 "join" => {
+                    println!("Joining");
                     state
                         .songbird
                         .join(
