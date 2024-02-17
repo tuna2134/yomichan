@@ -9,6 +9,11 @@ struct CreateAudioQuery {
     pub speaker: u32,
 }
 
+#[derive(Serialize)]
+struct Synthesis {
+    speaker: u32,
+}
+
 static ENDPOINT: Lazy<String> =
     Lazy::new(|| env::var("VOICEVOX_ENDPOINT").unwrap_or(String::from("http://localhost:50021")));
 
@@ -26,6 +31,7 @@ pub async fn tts(text: String) -> anyhow::Result<Vec<u8>> {
     let audio = client
         .post(format!("{}/synthesis", *ENDPOINT))
         .json(&audio_query)
+        .query(&Synthesis { speaker: 1 })
         .send()
         .await?
         .bytes()
