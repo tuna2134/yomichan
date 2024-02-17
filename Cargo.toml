@@ -9,6 +9,8 @@ edition = "2021"
 anyhow = "1.0.79"
 dotenvy = "0.15.7"
 env_logger = "0.11.2"
+jbonsai = { git = "https://github.com/jpreprocess/jbonsai.git", version = "0.1.0" }
+jpreprocess = "0.7.0"
 songbird = { version = "0.4.0", features = ["twilight"] }
 tokio = { version = "1.36.0", features = ["full"] }
 twilight-cache-inmemory = "0.15.4"

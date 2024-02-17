@@ -4,8 +4,10 @@ use twilight_cache_inmemory::{InMemoryCache, ResourceType};
 use twilight_gateway::{Intents, Shard, ShardId};
 use twilight_http::Client as HttpClient;
 use twilight_model::id::{marker::ApplicationMarker, Id};
+
 mod applications;
 mod events;
+mod tts;
 
 pub struct StateRef {
     pub http: HttpClient,
