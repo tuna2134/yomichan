@@ -14,7 +14,7 @@ pub async fn handle_event(state: Arc<StateRef>, event: Event) -> anyhow::Result<
         Event::MessageCreate(message) => {
             if state.channel_ids.lock().await.contains(&message.channel_id) {
                 let audio = tts(&message.content).await?;
-                if let Some(manager) = state.songbird.get(message.guild_id) {
+                if let Some(manager) = state.songbird.get(message.guild_id.unwrap()) {
                     let mut handler = manager.lock().await;
                     let _ = handler.play(Track::from(audio));
                 }
