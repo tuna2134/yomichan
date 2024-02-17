@@ -7,7 +7,6 @@ use twilight_model::id::{marker::ApplicationMarker, Id};
 
 mod applications;
 mod events;
-mod tts;
 
 pub struct StateRef {
     pub http: HttpClient,
