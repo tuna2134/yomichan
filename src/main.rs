@@ -48,6 +48,7 @@ async fn main() -> anyhow::Result<()> {
             }
         };
 
+        println!("{:?}", event);
         state_ref.songbird.process(&event).await;
         tokio::spawn(events::handle_event(Arc::clone(&state_ref), event));
     }

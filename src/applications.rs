@@ -34,7 +34,7 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
                         )
                         .await {
                             Ok(_) => {},
-                            Err(err) => println!("Error: {:?}", err)
+                            Err(err) => println!("Error: {}", err)
                         }
                 }
                 _ => {}
