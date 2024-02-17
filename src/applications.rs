@@ -48,6 +48,7 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
                         .await
                         .push(interaction.channel.unwrap().id);
                 }
+                "leave" => {}
                 _ => {}
             }
         }
