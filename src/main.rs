@@ -1,18 +1,24 @@
 use songbird::{shards::TwilightMap, Songbird};
 use std::{collections::HashMap, env, sync::Arc};
+use tokio::sync::Mutex;
 use twilight_cache_inmemory::{InMemoryCache, ResourceType};
 use twilight_gateway::{Intents, Shard, ShardId};
 use twilight_http::Client as HttpClient;
-use twilight_model::id::{marker::ApplicationMarker, Id};
+use twilight_model::id::{
+    marker::{ApplicationMarker, ChannelMarker},
+    Id,
+};
 
 mod applications;
 mod events;
+mod tts;
 
 pub struct StateRef {
     pub http: HttpClient,
     pub songbird: Songbird,
     pub application_id: Id<ApplicationMarker>,
     pub cache: InMemoryCache,
+    pub channel_ids: Mutex<Vec<Id<ChannelMarker>>>,
 }
 
 #[tokio::main]
@@ -40,6 +46,7 @@ async fn main() -> anyhow::Result<()> {
         songbird,
         application_id: application.id,
         cache,
+        channel_ids: Mutex::new(Vec::new()),
     });
     applications::set_application_command(&state_ref).await?;
 

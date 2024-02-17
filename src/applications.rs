@@ -42,6 +42,11 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
                         Ok(_) => {}
                         Err(err) => println!("Error: {}", err),
                     }
+                    state
+                        .channel_ids
+                        .lock()
+                        .await
+                        .push(interaction.channel.unwrap().id);
                 }
                 _ => {}
             }
