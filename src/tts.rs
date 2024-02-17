@@ -22,6 +22,7 @@ pub async fn tts(text: String) -> anyhow::Result<Vec<u8>> {
         .json()
         .await?;
     audio_query["outputSamplingRate"] = serde_json::Value::from(48000);
+    println!("{:?}", audio_query);
     let audio = client
         .post(format!("{}/synthesis", *ENDPOINT))
         .json(&audio_query)
