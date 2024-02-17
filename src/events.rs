@@ -12,7 +12,9 @@ pub async fn handle_event(state: Arc<StateRef>, event: Event) -> anyhow::Result<
             crate::applications::handle_interaction(&state, interaction.0).await?;
         }
         Event::MessageCreate(message) => {
+            println!("Message {:?}", message.content);
             if state.channel_ids.lock().await.contains(&message.channel_id) {
+                println!("Ok");
                 let audio = tts(message.content.clone()).await?;
                 if let Some(manager) = state.songbird.get(message.guild_id.unwrap()) {
                     let mut handler = manager.lock().await;
