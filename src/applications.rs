@@ -26,16 +26,22 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
             match command.name.as_str() {
                 "join" => {
                     println!("Joining");
+                    let channel_id = if let Some(voice_state) = state
+                        .cache
+                        .voice_state(interaction.user.unwrap().id, interaction.guild_id.unwrap())
+                    {
+                        voice_state.channel_id()
+                    } else {
+                        return Ok(());
+                    };
                     match state
                         .songbird
-                        .join(
-                            interaction.guild_id.unwrap(),
-                            interaction.channel.unwrap().id,
-                        )
-                        .await {
-                            Ok(_) => {},
-                            Err(err) => println!("Error: {}", err)
-                        }
+                        .join(interaction.guild_id.unwrap(), channel_id)
+                        .await
+                    {
+                        Ok(_) => {}
+                        Err(err) => println!("Error: {}", err),
+                    }
                 }
                 _ => {}
             }
