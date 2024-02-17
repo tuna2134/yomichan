@@ -14,6 +14,7 @@ pub struct StateRef {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    env_logger::init();
     dotenvy::dotenv().ok();
     let token = env::var("DISCORD_TOKEN")?;
 
