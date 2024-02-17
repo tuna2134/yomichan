@@ -18,7 +18,7 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
     match interaction.kind {
         InteractionType::ApplicationCommand => {
             let command =
-                if let Some(InteractionData::ApplicationCommand(command)) = interaction.data {
+                if let Some(InteractionData::ApplicationCommand(ref command)) = interaction.data {
                     command
                 } else {
                     return Ok(());
@@ -26,10 +26,10 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
             match command.name.as_str() {
                 "join" => {
                     println!("Joining");
-                    let channel_id = if let Some(voice_state) = state
-                        .cache
-                        .voice_state(interaction.user.unwrap().id, interaction.guild_id.unwrap())
-                    {
+                    let channel_id = if let Some(voice_state) = state.cache.voice_state(
+                        interaction.author_id().unwrap(),
+                        interaction.guild_id.unwrap(),
+                    ) {
                         voice_state.channel_id()
                     } else {
                         return Ok(());
