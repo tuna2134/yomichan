@@ -1,5 +1,5 @@
 use crate::{tts::tts, StateRef};
-use songbird::input::{cached::Memory, Input};
+use songbird::input::cached::Memory;
 use std::sync::Arc;
 use twilight_gateway::Event;
 
