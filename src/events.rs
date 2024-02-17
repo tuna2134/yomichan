@@ -1,5 +1,5 @@
 use crate::{tts::tts, StateRef};
-use songbird::tracks::Track;
+use songbird::input::{cached::Memory, Input};
 use std::sync::Arc;
 use twilight_gateway::Event;
 
@@ -15,8 +15,11 @@ pub async fn handle_event(state: Arc<StateRef>, event: Event) -> anyhow::Result<
             if state.channel_ids.lock().await.contains(&message.channel_id) {
                 let audio = tts(message.content.clone()).await?;
                 if let Some(manager) = state.songbird.get(message.guild_id.unwrap()) {
+                    let source = Memory::new(Input::from(audio))
+                        .await?;
+                    source.raw.spawn_loader();
                     let mut handler = manager.lock().await;
-                    let _ = handler.play(Track::from(audio));
+                    handler.play(source.into());
                 }
             }
         }
