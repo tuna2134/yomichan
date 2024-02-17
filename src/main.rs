@@ -24,8 +24,8 @@ async fn main() -> anyhow::Result<()> {
     let user = http.current_user().await?.model().await?;
     let application = http.current_user_application().await?.model().await?;
 
-    // let intents = Intents::GUILDS | Intents::MESSAGE_CONTENT | Intents::GUILD_VOICE_STATES;
-    let mut shard = Shard::new(ShardId::ONE, token, Intents::all());
+    let intents = Intents::GUILDS | Intents::MESSAGE_CONTENT | Intents::GUILD_VOICE_STATES;
+    let mut shard = Shard::new(ShardId::ONE, token, intents);
     let cache = InMemoryCache::builder()
         .resource_types(ResourceType::VOICE_STATE)
         .build();
