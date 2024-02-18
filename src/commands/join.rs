@@ -15,10 +15,12 @@ pub async fn join(state: &StateRef, interaction: Interaction) -> anyhow::Result<
     } else {
         return Ok(());
     };
-    state
+    let manager = state
         .songbird
         .join(interaction.guild_id.unwrap(), channel_id)
         .await?;
+    let mut handler = manager.lock().await;
+    handler.deafen(true).await?;
     state.channel_ids.lock().await.insert(
         interaction.guild_id.unwrap(),
         interaction.channel.unwrap().id,
