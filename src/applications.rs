@@ -25,7 +25,7 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
                 };
             match command.name.as_str() {
                 "join" => commands::join(state, interaction).await?,
-                // "leave" => {}
+                "leave" => commands::leave(state, interaction).await?,
                 _ => {}
             }
         }
