@@ -10,6 +10,7 @@ use twilight_model::id::{
 };
 
 mod applications;
+mod commands;
 mod events;
 mod tts;
 

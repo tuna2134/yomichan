@@ -1,4 +1,4 @@
-use crate::StateRef;
+use crate::{commands, StateRef};
 use twilight_model::application::{
     command::CommandType,
     interaction::{Interaction, InteractionData, InteractionType},
@@ -14,7 +14,6 @@ pub async fn set_application_command(state: &StateRef) -> anyhow::Result<()> {
 }
 
 pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> anyhow::Result<()> {
-    let _interaction_http = state.http.interaction(state.application_id);
     match interaction.kind {
         InteractionType::ApplicationCommand => {
             let command =
@@ -24,31 +23,8 @@ pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> a
                     return Ok(());
                 };
             match command.name.as_str() {
-                "join" => {
-                    println!("Joining");
-                    let channel_id = if let Some(voice_state) = state.cache.voice_state(
-                        interaction.author_id().unwrap(),
-                        interaction.guild_id.unwrap(),
-                    ) {
-                        voice_state.channel_id()
-                    } else {
-                        return Ok(());
-                    };
-                    match state
-                        .songbird
-                        .join(interaction.guild_id.unwrap(), channel_id)
-                        .await
-                    {
-                        Ok(_) => {}
-                        Err(err) => println!("Error: {}", err),
-                    }
-                    state
-                        .channel_ids
-                        .lock()
-                        .await
-                        .push(interaction.channel.unwrap().id);
-                }
-                "leave" => {}
+                "join" => commands::join(state, interaction).await?,
+                // "leave" => {}
                 _ => {}
             }
         }
