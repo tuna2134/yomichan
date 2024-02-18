@@ -15,21 +15,18 @@ pub async fn set_application_command(state: &StateRef) -> anyhow::Result<()> {
 }
 
 pub async fn handle_interaction(state: &StateRef, interaction: Interaction) -> anyhow::Result<()> {
-    match interaction.kind {
-        InteractionType::ApplicationCommand => {
-            let command =
-                if let Some(InteractionData::ApplicationCommand(ref command)) = interaction.data {
-                    command
-                } else {
-                    return Ok(());
-                };
-            match command.name.as_str() {
-                "join" => commands::join(state, interaction).await?,
-                "leave" => commands::leave(state, interaction).await?,
-                _ => {}
-            }
+    if interaction.kind == InteractionType::ApplicationCommand {
+        let command =
+            if let Some(InteractionData::ApplicationCommand(ref command)) = interaction.data {
+                command
+            } else {
+                return Ok(());
+            };
+        match command.name.as_str() {
+            "join" => commands::join(state, interaction).await?,
+            "leave" => commands::leave(state, interaction).await?,
+            _ => {}
         }
-        _ => {}
     }
     Ok(())
 }
