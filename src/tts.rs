@@ -36,5 +36,7 @@ pub async fn tts(text: String, speaker: u32) -> anyhow::Result<Compressed> {
         .await?
         .bytes()
         .await?;
-    Ok(Compressed::new(audio.into(), songbird::driver::Bitrate::Auto).await?)
+    let src = Compressed::new(audio.into(), songbird::driver::Bitrate::Auto).await?;
+    src.raw.spawn_loader();
+    Ok(src)
 }
