@@ -6,6 +6,11 @@ pub async fn handle_message(state: &StateRef, message: Message) -> anyhow::Resul
     if message.author.bot {
         return Ok(());
     }
+    let content = if message.content.len() > 40 {
+        format!("{}、以下省略", message.content[..40].to_string())
+    } else {
+        message.content
+    };
     if state
         .channel_ids
         .lock()
@@ -14,7 +19,7 @@ pub async fn handle_message(state: &StateRef, message: Message) -> anyhow::Resul
         .any(|&id| id == message.channel_id)
     {
         if let Some(manager) = state.songbird.get(message.guild_id.unwrap()) {
-            let source = tts(message.content, 1).await?;
+            let source = tts(content, 1).await?;
             let mut handler = manager.lock().await;
             handler.play_input(source.into());
         }
