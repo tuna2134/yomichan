@@ -7,7 +7,6 @@ use twilight_util::builder::InteractionResponseDataBuilder;
 use crate::StateRef;
 
 pub async fn join(state: &StateRef, interaction: Interaction) -> anyhow::Result<()> {
-    println!("Joining");
     let channel_id = if let Some(voice_state) = state.cache.voice_state(
         interaction.author_id().unwrap(),
         interaction.guild_id.unwrap(),

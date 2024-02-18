@@ -3,6 +3,9 @@ use twilight_model::channel::Message;
 use crate::{tts::tts, StateRef};
 
 pub async fn handle_message(state: &StateRef, message: Message) -> anyhow::Result<()> {
+    if message.author.bot {
+        return Ok(());
+    }
     if state
         .channel_ids
         .lock()
