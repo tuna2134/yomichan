@@ -1,6 +1,7 @@
 use once_cell::sync::Lazy;
 use reqwest::Client;
 use serde::Serialize;
+use songbird::input::cached::Compressed;
 use std::env;
 
 #[derive(Serialize)]
@@ -17,7 +18,7 @@ struct Synthesis {
 static ENDPOINT: Lazy<String> =
     Lazy::new(|| env::var("VOICEVOX_ENDPOINT").unwrap_or(String::from("http://localhost:50021")));
 
-pub async fn tts(text: String, speaker: u32) -> anyhow::Result<Vec<u8>> {
+pub async fn tts(text: String, speaker: u32) -> anyhow::Result<Compressed> {
     let client = Client::new();
     let mut audio_query: serde_json::Value = client
         .post(format!("{}/audio_query", *ENDPOINT))
@@ -35,5 +36,5 @@ pub async fn tts(text: String, speaker: u32) -> anyhow::Result<Vec<u8>> {
         .await?
         .bytes()
         .await?;
-    Ok(audio.to_vec())
+    Ok(Compressed::new(audio.into(), songbird::driver::Bitrate::Auto).await?)
 }
