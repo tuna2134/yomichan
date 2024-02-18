@@ -7,7 +7,10 @@ pub async fn handle_message(state: &StateRef, message: Message) -> anyhow::Resul
         return Ok(());
     }
     let content = if message.content.len() > 40 {
-        format!("{}、以下省略", &message.content.chars().take(40).collect::<String>())
+        format!(
+            "{}、以下省略",
+            &message.content.chars().take(40).collect::<String>()
+        )
     } else {
         message.content
     };
