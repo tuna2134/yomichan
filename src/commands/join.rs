@@ -20,11 +20,10 @@ pub async fn join(state: &StateRef, interaction: Interaction) -> anyhow::Result<
         .songbird
         .join(interaction.guild_id.unwrap(), channel_id)
         .await?;
-    state
-        .channel_ids
-        .lock()
-        .await
-        .push(interaction.channel.unwrap().id);
+    state.channel_ids.lock().await.insert(
+        interaction.guild_id.unwrap(),
+        interaction.channel.unwrap().id,
+    );
     let interaction_http = state.http.interaction(state.application_id);
     interaction_http
         .create_response(

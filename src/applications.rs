@@ -9,7 +9,8 @@ pub async fn set_application_command(state: &StateRef) -> anyhow::Result<()> {
     let interaction_http = state.http.interaction(state.application_id);
 
     let join = CommandBuilder::new("join", "読み上げ開始", CommandType::ChatInput).build();
-    interaction_http.set_global_commands(&[join]).await?;
+    let leave = CommandBuilder::new("leave", "読み上げ終了", CommandType::ChatInput).build();
+    interaction_http.set_global_commands(&[join, leave]).await?;
     Ok(())
 }
 

@@ -5,7 +5,7 @@ use twilight_cache_inmemory::{InMemoryCache, ResourceType};
 use twilight_gateway::{Intents, Shard, ShardId};
 use twilight_http::Client as HttpClient;
 use twilight_model::id::{
-    marker::{ApplicationMarker, ChannelMarker},
+    marker::{ApplicationMarker, ChannelMarker, GuildMarker},
     Id,
 };
 
@@ -19,7 +19,7 @@ pub struct StateRef {
     pub songbird: Songbird,
     pub application_id: Id<ApplicationMarker>,
     pub cache: InMemoryCache,
-    pub channel_ids: Mutex<Vec<Id<ChannelMarker>>>,
+    pub channel_ids: Mutex<HashMap<Id<GuildMarker>, Id<ChannelMarker>>>,
 }
 
 #[tokio::main]
@@ -50,7 +50,7 @@ async fn main() -> anyhow::Result<()> {
         songbird,
         application_id: application.id,
         cache,
-        channel_ids: Mutex::new(Vec::new()),
+        channel_ids: Mutex::new(HashMap::new()),
     });
     applications::set_application_command(&state_ref).await?;
 
