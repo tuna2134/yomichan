@@ -6,10 +6,10 @@ pub async fn handle_message(state: &StateRef, message: Message) -> anyhow::Resul
     if message.author.bot {
         return Ok(());
     }
-    let content = if message.content.len() > 40 {
+    let content = if message.content.len() > 100 {
         format!(
             "{}、以下省略",
-            &message.content.chars().take(40).collect::<String>()
+            &message.content.chars().take(100).collect::<String>()
         )
     } else {
         message.content
